@@ -37,17 +37,23 @@ const List: React.FC<IRouteParams> = ({ match }) => {
     const [movimentoSelecionado, setMovimentoSelecionado] = useState(['recorrente', 'eventual']);
 
     const { type } = match.params;
-    const title = useMemo(() => {
-        return type === 'entradas' ? 'Entradas' : 'Saídas';
-    }, [type]);
 
-    const lineColor = useMemo(() => {
-        return type === 'entradas' ? '#46a656' : '#e02828';
-    }, [type]);
+    const infoCards = useMemo(() => {
+        if (type === 'entradas') {
+            return {
+                title: 'Entradas',
+                lineColor: '#46a656',
+                listData: gains
+            }
+        } else {
+            return {
+                title: 'Saídas',
+                lineColor: '#e02828',
+                listData: expenses
+            }
+        }
 
-    const listData = useMemo(() => {
-        return type === 'entradas' ? gains : expenses;
-    }, [type]);
+    }, [type])
 
     const months = useMemo(() => {
         return meses.map((mes, indice) => {
@@ -60,9 +66,9 @@ const List: React.FC<IRouteParams> = ({ match }) => {
     }, []);
 
     const years = useMemo(() => {
-        let anosUnicos: number[] =[];
+        let anosUnicos: number[] = [];
 
-        listData.forEach(item => {
+        infoCards.listData.forEach(item => {
             const data = new Date(item.date),
                 ano = data.getFullYear();
 
@@ -78,7 +84,7 @@ const List: React.FC<IRouteParams> = ({ match }) => {
             }
         });
 
-    }, [listData]);
+    }, [infoCards.listData]);
 
     const onClickTipoMovimentacao = (tipoMovimentacao: string) => {
         const isSelecionado = movimentoSelecionado.findIndex(item => item === tipoMovimentacao);
@@ -92,7 +98,7 @@ const List: React.FC<IRouteParams> = ({ match }) => {
     }
 
     useEffect(() => {
-        const datasFiltradas = listData.filter(item => {
+        const datasFiltradas = infoCards.listData.filter(item => {
             const date = new Date(item.date),
                 mes = String(date.getMonth() + 1),
                 ano = String(date.getFullYear());
@@ -113,18 +119,32 @@ const List: React.FC<IRouteParams> = ({ match }) => {
         });
 
         setData(datasFormatadas)
-    }, [listData, mesSelecionado, anoSelecionado, data.length, movimentoSelecionado]);
+    }, [infoCards.listData, mesSelecionado, anoSelecionado, data.length, movimentoSelecionado]);
     
     return (
         <Container>
-            <ContentHeader title={title} lineColor={lineColor}>
-                <SelectInput options={months} onChange={(e) => setMesSelecionado(e.target.value)} defaultValue={mesSelecionado}/>
-                <SelectInput options={years} onChange={(e) => setAnoSelecionado(e.target.value)} defaultValue={anoSelecionado}/>
+            <ContentHeader title={infoCards.title} lineColor={infoCards.lineColor}>
+                <SelectInput options={months} 
+                             onChange={(e) => setMesSelecionado(e.target.value)} 
+                             defaultValue={mesSelecionado}/>
+
+                <SelectInput options={years} 
+                             onChange={(e) => setAnoSelecionado(e.target.value)} 
+                             defaultValue={anoSelecionado}/>
             </ContentHeader>
 
             <Filters>
-                <button type="button" className={`tag-filter tag-filter-recorrente ${movimentoSelecionado.includes('recorrente') && 'tag-ativado'}`} onClick={() => onClickTipoMovimentacao('recorrente')}>Recorrentes</button>
-                <button type="button" className={`tag-filter tag-filter-eventual ${movimentoSelecionado.includes('eventual') && 'tag-ativado'}`} onClick={() => onClickTipoMovimentacao('eventual')}>Eventuais</button>
+                <button type="button" 
+                        className={`tag-filter tag-filter-recorrente ${movimentoSelecionado.includes('recorrente') && 'tag-ativado'}`} 
+                        onClick={() => onClickTipoMovimentacao('recorrente')}>
+                        Recorrentes
+                </button>
+
+                <button type="button" 
+                        className={`tag-filter tag-filter-eventual ${movimentoSelecionado.includes('eventual') && 'tag-ativado'}`} 
+                        onClick={() => onClickTipoMovimentacao('eventual')}>
+                        Eventuais
+                </button>
             </Filters>
 
             <Content>
