@@ -1,4 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react';
+import { v4 as uuid } from 'uuid';
 
 import ContentHeader from '../../components/ContentHeader';
 import SelectInput from '../../components/SelectInput';
@@ -10,7 +11,7 @@ import formatarDinheiro from '../../utils/formatarDinheiro'
 import formatarData from '../../utils/formatarData'
 
 import { Container, Content, Filters } from './styles';
-import { isTypeNode } from 'typescript';
+import meses from '../../utils/meses';
 
 interface IRouteParams {
     match: {
@@ -33,6 +34,7 @@ const List: React.FC<IRouteParams> = ({ match }) => {
     const [data, setData] = useState<IData[]>([]);
     const [mesSelecionado, setMesSelecionado] = useState<string>(String(new Date().getMonth() + 1));
     const [anoSelecionado, setAnoSelecionado] = useState<string>(String(new Date().getFullYear()));
+    const [movimentoSelecionado, setMovimentoSelecionado] = useState(['recorrente', 'eventual']);
 
     const { type } = match.params;
     const title = useMemo(() => {
@@ -47,20 +49,15 @@ const List: React.FC<IRouteParams> = ({ match }) => {
         return type === 'entradas' ? gains : expenses;
     }, [type]);
 
-    const months = [
-        { value: '1', label: 'Janeiro' },
-        { value: '2', label: 'Fevereiro' },
-        { value: '3', label: 'Março' },
-        { value: '4', label: 'Abril' },
-        { value: '5', label: 'Maio' },
-        { value: '6', label: 'Junho' },
-        { value: '7', label: 'Julho' },
-        { value: '8', label: 'Agosto' },
-        { value: '9', label: 'Setembro' },
-        { value: '10', label: 'Outubro' },
-        { value: '11', label: 'Novembro' },
-        { value: '12', label: 'Dezembro' }
-    ];
+    const months = useMemo(() => {
+        return meses.map((mes, indice) => {
+            return {
+                value: indice + 1,
+                label: mes
+            }
+        })
+
+    }, []);
 
     const years = useMemo(() => {
         let anosUnicos: number[] =[];
@@ -81,7 +78,18 @@ const List: React.FC<IRouteParams> = ({ match }) => {
             }
         });
 
-    }, []);
+    }, [listData]);
+
+    const onClickTipoMovimentacao = (tipoMovimentacao: string) => {
+        const isSelecionado = movimentoSelecionado.findIndex(item => item === tipoMovimentacao);
+
+        if (isSelecionado >= 0) {
+            const filtrado = movimentoSelecionado.filter(item => item !== tipoMovimentacao);
+            setMovimentoSelecionado(filtrado);
+        } else {
+            setMovimentoSelecionado((prev) => [...prev, tipoMovimentacao]);
+        }
+    }
 
     useEffect(() => {
         const datasFiltradas = listData.filter(item => {
@@ -89,12 +97,12 @@ const List: React.FC<IRouteParams> = ({ match }) => {
                 mes = String(date.getMonth() + 1),
                 ano = String(date.getFullYear());
 
-            return mes === mesSelecionado && ano === anoSelecionado;
+            return mes === mesSelecionado && ano === anoSelecionado && movimentoSelecionado.includes(item.frequency);
         });
 
         const datasFormatadas = datasFiltradas.map(item => {
             return {
-                id: String(new Date().getTime()) + item.amount,
+                id: uuid(),
                 description: item.description,
                 amountFormatted: formatarDinheiro(Number(item.amount)),
                 frequency: item.frequency,
@@ -105,7 +113,7 @@ const List: React.FC<IRouteParams> = ({ match }) => {
         });
 
         setData(datasFormatadas)
-    }, [listData, mesSelecionado, anoSelecionado, data.length]);
+    }, [listData, mesSelecionado, anoSelecionado, data.length, movimentoSelecionado]);
     
     return (
         <Container>
@@ -115,8 +123,8 @@ const List: React.FC<IRouteParams> = ({ match }) => {
             </ContentHeader>
 
             <Filters>
-                <button type="button" className="tag-filter tag-filter-recorrente">Recorrentes</button>
-                <button type="button" className="tag-filter tag-filter-eventual">Eventuais</button>
+                <button type="button" className={`tag-filter tag-filter-recorrente ${movimentoSelecionado.includes('recorrente') && 'tag-ativado'}`} onClick={() => onClickTipoMovimentacao('recorrente')}>Recorrentes</button>
+                <button type="button" className={`tag-filter tag-filter-eventual ${movimentoSelecionado.includes('eventual') && 'tag-ativado'}`} onClick={() => onClickTipoMovimentacao('eventual')}>Eventuais</button>
             </Filters>
 
             <Content>

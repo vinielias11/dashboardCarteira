@@ -26,13 +26,13 @@ export const Title = styled.h3`
 export const MenuContainer = styled.nav`
     display: flex;
     flex-direction: column;
-    margin-top: 50px;
+    margin-top: 150px;
 `;
 
 export const MenuItemLink  = styled.a`
     color: ${props => props.theme.colors.info};
     text-decoration: none;
-    margin: 7px 0;
+    margin: 12px 0;
     display: flex;
     align-items: center;
     transition: opacity .3s;
@@ -41,7 +41,7 @@ export const MenuItemLink  = styled.a`
     }
 
     > svg {
-        font-size: 18px;
+        font-size: 35px;
         margin-right: 5px;
     }
 `;
