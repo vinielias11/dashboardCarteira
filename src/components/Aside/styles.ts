@@ -14,13 +14,17 @@ export const Header = styled.header`
 `;
 
 export const LogImg = styled.img`
-    height: 40px;
-    width: 40px;
+    height: 60px;
+    width: 60px;
+    margin-top: 100px;
 `;
 
 export const Title = styled.h3`
+    font-size: 30px;
+    font-family: Montserrat;
     color: ${props => props.theme.colors.white};
-    margin-left: 10px;
+    margin-top: 100px;
+    margin-left: 20px;
 `;
 
 export const MenuContainer = styled.nav`
