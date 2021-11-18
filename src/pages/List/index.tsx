@@ -62,11 +62,26 @@ const List: React.FC<IRouteParams> = ({ match }) => {
         { value: '12', label: 'Dezembro' }
     ];
 
-    const years = [
-        { value: '2021', label: '2021' },
-        { value: '2020', label: '2020' },
-        { value: '2019', label: '2019' }
-    ];
+    const years = useMemo(() => {
+        let anosUnicos: number[] =[];
+
+        listData.forEach(item => {
+            const data = new Date(item.date),
+                ano = data.getFullYear();
+
+            if (!anosUnicos.includes(ano)) {
+                anosUnicos.push(ano);
+            }
+        })
+
+        return anosUnicos.map(year => {
+            return {
+                value: year,
+                label: year
+            }
+        });
+
+    }, []);
 
     useEffect(() => {
         const datasFiltradas = listData.filter(item => {

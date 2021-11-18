@@ -9,19 +9,20 @@ import {
 
 const Toggle: React.FC = () => {
     const [online, setOnline] = useState(false);
-return (
-    <Container>
-        <ToggleLabel>Light</ToggleLabel>
-        <ToggleSelector 
-            checked={online}
-            uncheckedIcon={false}
-            checkedIcon={false}
-            onHandleColor={'#fff'}
-            offHandleColor={'#121212'}
-            onChange={() => setOnline(!online)}
-        />
-        <ToggleLabel>Dark</ToggleLabel>
-    </Container>)
+    
+    return (
+        <Container>
+            <ToggleLabel>Light</ToggleLabel>
+            <ToggleSelector 
+                checked={!online}
+                uncheckedIcon={false}
+                checkedIcon={false}
+                onHandleColor={'#fff'}
+                offHandleColor={'#121212'}
+                onChange={() => setOnline(!online)}
+            />
+            <ToggleLabel>Dark</ToggleLabel>
+        </Container>)
 }
 
 export default Toggle;
