@@ -40,7 +40,7 @@ const List: React.FC<IRouteParams> = ({ match }) => {
     }, [type]);
 
     const lineColor = useMemo(() => {
-        return type === 'entradas' ? '#F7931B' : '#E44C4E';
+        return type === 'entradas' ? '#46a656' : '#e02828';
     }, [type]);
 
     const listData = useMemo(() => {
@@ -84,7 +84,7 @@ const List: React.FC<IRouteParams> = ({ match }) => {
                 amountFormatted: formatarDinheiro(Number(item.amount)),
                 frequency: item.frequency,
                 dateFormatted: formatarData(item.date),
-                tagColor: item.frequency === 'recorrente' ? '#4E41F0' : '#E44C4E'
+                tagColor: item.frequency === 'recorrente' ? '#d7eedb' : '#a55858'
             }
 
         });

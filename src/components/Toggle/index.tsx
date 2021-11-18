@@ -16,6 +16,8 @@ return (
             checked={online}
             uncheckedIcon={false}
             checkedIcon={false}
+            onHandleColor={'#fff'}
+            offHandleColor={'#121212'}
             onChange={() => setOnline(!online)}
         />
         <ToggleLabel>Dark</ToggleLabel>
