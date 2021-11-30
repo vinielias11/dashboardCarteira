@@ -32,8 +32,8 @@ interface IData {
 
 const List: React.FC<IRouteParams> = ({ match }) => {
     const [data, setData] = useState<IData[]>([]);
-    const [mesSelecionado, setMesSelecionado] = useState<string>(String(new Date().getMonth() + 1));
-    const [anoSelecionado, setAnoSelecionado] = useState<string>(String(new Date().getFullYear()));
+    const [mesSelecionado, setMesSelecionado] = useState<number>(new Date().getMonth() + 1);
+    const [anoSelecionado, setAnoSelecionado] = useState<number>(new Date().getFullYear());
     const [movimentoSelecionado, setMovimentoSelecionado] = useState(['recorrente', 'eventual']);
 
     const { type } = match.params;
@@ -97,11 +97,29 @@ const List: React.FC<IRouteParams> = ({ match }) => {
         }
     }
 
+    const trataMesSelecionado = (mes: string) => {
+        try {
+            const parseMes = Number(mes);
+            setMesSelecionado(parseMes);
+        } catch (err) {
+            throw new Error('Mês inválido. Apenas 0 a 12 é suportado.')
+        }
+    }
+
+    const trataAnoSelecionado = (ano: string) => {
+        try {
+            const parseAno = Number(ano);
+            setAnoSelecionado(parseAno);
+        } catch (err) {
+            throw new Error('Ano inválido. Apenas números inteiros são suportados.')
+        }
+    }
+
     useEffect(() => {
         const datasFiltradas = infoCards.listData.filter(item => {
             const date = new Date(item.date),
-                mes = String(date.getMonth() + 1),
-                ano = String(date.getFullYear());
+                mes = date.getMonth() + 1,
+                ano = date.getFullYear();
 
             return mes === mesSelecionado && ano === anoSelecionado && movimentoSelecionado.includes(item.frequency);
         });
@@ -125,11 +143,11 @@ const List: React.FC<IRouteParams> = ({ match }) => {
         <Container>
             <ContentHeader title={infoCards.title} lineColor={infoCards.lineColor}>
                 <SelectInput options={months} 
-                             onChange={(e) => setMesSelecionado(e.target.value)} 
+                             onChange={(e) => trataMesSelecionado(e.target.value)} 
                              defaultValue={mesSelecionado}/>
 
                 <SelectInput options={years} 
-                             onChange={(e) => setAnoSelecionado(e.target.value)} 
+                             onChange={(e) => trataAnoSelecionado(e.target.value)} 
                              defaultValue={anoSelecionado}/>
             </ContentHeader>
 
