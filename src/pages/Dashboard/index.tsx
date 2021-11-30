@@ -1,11 +1,12 @@
 import React, { useState, useMemo } from 'react';
 
-import { Container } from './styles';
-import ContentHeader  from '../../components/ContentHeader'
-import SelectInput  from '../../components/SelectInput'
-import expenses from '../../repositories/expenses'
-import gains from '../../repositories/gains'
-import meses from '../../utils/meses'
+import { Container, Content } from './styles';
+import ContentHeader  from '../../components/ContentHeader';
+import SelectInput  from '../../components/SelectInput';
+import expenses from '../../repositories/expenses';
+import gains from '../../repositories/gains';
+import meses from '../../utils/meses';
+import WalletCard from '../../components/WalletCard';
 
 const Dashboard: React.FC = () => {
     const [mesSelecionado, setMesSelecionado] = useState<number>(new Date().getMonth() + 1);
@@ -77,6 +78,13 @@ const Dashboard: React.FC = () => {
                                 onChange={(e) => trataAnoSelecionado(e.target.value)} 
                                 defaultValue={anoSelecionado}/>
             </ContentHeader>
+            
+            <Content>
+                <WalletCard title="saldo" amount={150.00} footer="atualizado com base nas entradas e saídas" icon="dollar" color="#0000ff" />
+                <WalletCard title="saldo" amount={5000.00} footer="atualizado com base nas entradas e saídas" icon="arrowUp" color="#46a656" />
+                <WalletCard title="saldo" amount={4850.00} footer="atualizado com base nas entradas e saídas" icon="arrowDown" color="#e02828" />
+            </Content>
+
         </Container>
     );
 }
