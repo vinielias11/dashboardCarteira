@@ -1,4 +1,6 @@
-import React from 'react';
+/* eslint-disable no-useless-computed-key */
+import React, { useMemo } from 'react';
+import CountUp from 'react-countup';
 
 import dollar from '../../assets/dollar.svg';
 import arrowUp from '../../assets/arrow-up.svg';
@@ -22,22 +24,31 @@ const WalletCard: React.FC<IWalletCardProps> = ({
     color
 }) => {
 
-    const iconeSelecionado = () => {
+    const iconeSelecionado = useMemo(() => {
         const obj = {
             ['dollar']: () => dollar,
             ['arrowUp']: () => arrowUp,
             ['arrowDown']: () => arrowDown
         }
-
         return obj[icon]();
-    }
+
+    },[icon]);
 
     return (
         <Container color={color}>
             <span>{title}</span>
-            <h1>{amount}</h1>
+            <h1> 
+                <CountUp
+                    end={amount}
+                    duration={3}
+                    prefix={"R$ "} 
+                    separator="." 
+                    decimal="," 
+                    decimals={2}
+                />
+            </h1>
             <small>{footer}</small>
-            <img src={String(iconeSelecionado)} alt={title} />
+            <img src={iconeSelecionado} alt={title} />
         </ Container>
     );
 }
