@@ -1,12 +1,20 @@
 import React, { useState, useMemo } from 'react';
 
 import { Container, Content } from './styles';
+
 import ContentHeader  from '../../components/ContentHeader';
 import SelectInput  from '../../components/SelectInput';
+
 import expenses from '../../repositories/expenses';
 import gains from '../../repositories/gains';
+
 import meses from '../../utils/meses';
+
 import WalletCard from '../../components/WalletCard';
+import CardSituacao from '../../components/CardSituacao';
+
+import happyImg from '../../assets/happy.svg';
+import sadImg from '../../assets/sad.svg';
 
 const Dashboard: React.FC = () => {
     const [mesSelecionado, setMesSelecionado] = useState<number>(new Date().getMonth() + 1);
@@ -49,11 +57,82 @@ const Dashboard: React.FC = () => {
 
     }, []);
 
+    const totalSaidas = useMemo(() => {
+        let total: number = 0;
+
+        expenses.forEach(item => {
+            const data = new Date(item.date),
+                ano = data.getFullYear(),
+                mes = data.getMonth() + 1;
+
+            if (mes === mesSelecionado && ano === anoSelecionado) {
+                try {
+                    total += Number(item.amount)
+                } catch {
+                    throw new Error('Valor inválido. Deve ser número');
+                }
+            }
+        });
+
+        return total;
+
+    }, [mesSelecionado, anoSelecionado]);
+
+    const totalEntradas = useMemo(() => {
+        let total: number = 0;
+
+        gains.forEach(item => {
+            const data = new Date(item.date),
+                ano = data.getFullYear(),
+                mes = data.getMonth() + 1;
+
+            if (mes === mesSelecionado && ano === anoSelecionado) {
+                try {
+                    total += Number(item.amount)
+                } catch {
+                    throw new Error('Valor inválido. Deve ser número');
+                }
+            }
+        });
+
+        return total;
+
+    }, [mesSelecionado, anoSelecionado]);
+
+    const saldo = useMemo(() => {
+        return totalEntradas - totalSaidas;
+    }, [totalEntradas, totalSaidas]);
+
+    const trataCard = useMemo(() => {
+        if (saldo < 0) {
+            return {
+                title: "Que triste!",
+                desc: "Sua carteira está negativa.",
+                footerText: "Verifique seus gastos e tente cortar algumas coisas.",
+                icon: {sadImg}
+            }
+        } else if (saldo === 0) {
+            return {
+                title: "Ufa!",
+                desc: "Você gastou exatamente o que ganhou.",
+                footerText: "Tenha cuidado no próximo mês.",
+                icon: {happyImg}
+            }
+        } else {
+            return {
+                title: "Muito bem!",
+                desc: "Sua carteira está positiva.",
+                footerText: "Considere investir seu saldo.",
+                icon: {happyImg}
+            }
+        }
+    }, [saldo]);
+
     const trataMesSelecionado = (mes: string) => {
         try {
             const parseMes = Number(mes);
             setMesSelecionado(parseMes);
-        } catch (err) {
+        } catch {
             throw new Error('Mês inválido. Apenas 0 a 12 é suportado.')
         }
     }
@@ -62,7 +141,7 @@ const Dashboard: React.FC = () => {
         try {
             const parseAno = Number(ano);
             setAnoSelecionado(parseAno);
-        } catch (err) {
+        } catch {
             throw new Error('Ano inválido. Apenas números inteiros são suportados.')
         }
     }
@@ -80,9 +159,10 @@ const Dashboard: React.FC = () => {
             </ContentHeader>
             
             <Content>
-                <WalletCard title="saldo" amount={150.00} footer="atualizado com base nas entradas e saídas" icon="dollar" color="#0000ff" />
-                <WalletCard title="entradas" amount={5000.00} footer="atualizado com base nas entradas e saídas" icon="arrowUp" color="#46a656" />
-                <WalletCard title="saídas" amount={4850.00} footer="atualizado com base nas entradas e saídas" icon="arrowDown" color="#e02828" />
+                <WalletCard title="saldo" amount={saldo} footer="atualizado com base nas entradas e saídas" icon="dollar" color="#0000ff" />
+                <WalletCard title="entradas" amount={totalEntradas} footer="atualizado com base nas entradas e saídas" icon="arrowUp" color="#46a656" />
+                <WalletCard title="saídas" amount={totalSaidas} footer="atualizado com base nas entradas e saídas" icon="arrowDown" color="#e02828" />
+                <CardSituacao title={trataCard.title} desc={trataCard.desc} footerText={trataCard.footerText} icon={happyImg}/>
             </Content>
 
         </Container>

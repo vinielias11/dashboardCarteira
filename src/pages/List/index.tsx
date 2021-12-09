@@ -101,7 +101,7 @@ const List: React.FC<IRouteParams> = ({ match }) => {
         try {
             const parseMes = Number(mes);
             setMesSelecionado(parseMes);
-        } catch (err) {
+        } catch {
             throw new Error('Mês inválido. Apenas 0 a 12 é suportado.')
         }
     }
@@ -110,7 +110,7 @@ const List: React.FC<IRouteParams> = ({ match }) => {
         try {
             const parseAno = Number(ano);
             setAnoSelecionado(parseAno);
-        } catch (err) {
+        } catch {
             throw new Error('Ano inválido. Apenas números inteiros são suportados.')
         }
     }

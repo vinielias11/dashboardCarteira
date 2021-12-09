@@ -40,7 +40,7 @@ const WalletCard: React.FC<IWalletCardProps> = ({
             <h1> 
                 <CountUp
                     end={amount}
-                    duration={3}
+                    duration={2}
                     prefix={"R$ "} 
                     separator="." 
                     decimal="," 
