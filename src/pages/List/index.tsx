@@ -128,7 +128,7 @@ const List: React.FC<IRouteParams> = ({ match }) => {
             return {
                 id: uuid(),
                 description: item.description,
-                amountFormatted: formatarDinheiro(Number(item.amount)),
+                amountFormatted: formatarDinheiro(item.amount),
                 frequency: item.frequency,
                 dateFormatted: formatarData(item.date),
                 tagColor: item.frequency === 'recorrente' ? '#d7eedb' : '#a55858'
