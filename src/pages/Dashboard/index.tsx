@@ -108,22 +108,19 @@ const Dashboard: React.FC = () => {
             return {
                 title: "Que triste!",
                 desc: "Sua carteira está negativa.",
-                footerText: "Verifique seus gastos e tente cortar algumas coisas.",
-                icon: {sadImg}
+                footerText: "Verifique seus gastos e tente cortar algumas coisas."
             }
         } else if (saldo === 0) {
             return {
                 title: "Ufa!",
                 desc: "Você gastou exatamente o que ganhou.",
-                footerText: "Tenha cuidado no próximo mês.",
-                icon: {happyImg}
+                footerText: "Tenha cuidado no próximo mês."
             }
         } else {
             return {
                 title: "Muito bem!",
                 desc: "Sua carteira está positiva.",
-                footerText: "Considere investir seu saldo.",
-                icon: {happyImg}
+                footerText: "Considere investir seu saldo."
             }
         }
     }, [saldo]);
@@ -162,7 +159,7 @@ const Dashboard: React.FC = () => {
                 <WalletCard title="saldo" amount={saldo} footer="atualizado com base nas entradas e saídas" icon="dollar" color="#0000ff" />
                 <WalletCard title="entradas" amount={totalEntradas} footer="atualizado com base nas entradas e saídas" icon="arrowUp" color="#46a656" />
                 <WalletCard title="saídas" amount={totalSaidas} footer="atualizado com base nas entradas e saídas" icon="arrowDown" color="#e02828" />
-                <CardSituacao title={trataCard.title} desc={trataCard.desc} footerText={trataCard.footerText} icon={happyImg}/>
+                <CardSituacao title={trataCard.title} desc={trataCard.desc} footerText={trataCard.footerText} />
             </Content>
 
         </Container>
