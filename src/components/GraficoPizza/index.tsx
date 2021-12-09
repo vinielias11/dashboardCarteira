@@ -33,7 +33,7 @@ const GraficoPizza: React.FC<IGraficoProps> = ({ data }) => {
                     {
                         data.map((i) => (
                             <Legenda key={i.name} color={i.color}>
-                            <div>{i.porcentagem}</div>
+                            <div>{i.porcentagem}%</div>
                             <span>{i.name}</span>
                             </Legenda>
                         ))
@@ -44,10 +44,10 @@ const GraficoPizza: React.FC<IGraficoProps> = ({ data }) => {
             <Direita>
                     <ResponsiveContainer>
                         <PieChart>
-                            <Pie data={data} dataKey="percent">
+                            <Pie data={data} dataKey="value">
                                 {
                                     data.map((i) => (
-                                        <Cell key={i.name} fill={i.color} />
+                                        <Cell key={`cell-${i.name}`} fill={i.color} />
                                     ))
                                 }
                             </Pie>
