@@ -10,7 +10,7 @@ import {
  
 import formatarDinheiro from '../../utils/formatarDinheiro';
 
-import { Container, Esquerda, Direita } from './styles'
+import { Container, Esquerda, Direita, ContainerLegenda, Legenda } from './styles'
 
 interface IGraficoBarraProps {
     title: string;
@@ -27,6 +27,16 @@ const GraficoBarra: React.FC<IGraficoBarraProps> = ({ title, data }) => {
         <Container>
             <Esquerda>
                 <h2>{title}</h2>
+                <ContainerLegenda>
+                    {
+                        data.map((i) => (
+                            <Legenda key={i.name} color={i.cor}>
+                            <div>{i.porcentagem}%</div>
+                            <span>{i.name}</span>
+                            </Legenda>
+                        ))
+                    }
+                </ContainerLegenda>
             </Esquerda>
             <Direita>
                 <ResponsiveContainer>

@@ -15,9 +15,6 @@ export const Container = styled.div`
     margin: 10px 0;
     padding: 30px 20px;
     border-radius: 7px;
-
-    
-
 `;
 
 export const ContainerLegenda = styled.ul`

@@ -213,6 +213,36 @@ const Dashboard: React.FC = () => {
 
     },[mesSelecionado, anoSelecionado]);
 
+    const graficoEntradasRecorrentesVsEventuais = useMemo(() => {
+        let valorRecorrente = 0,
+            valorEventual = 0;
+
+        gains.filter(entrada => {
+            const data = new Date(entrada.date),
+                ano = data.getFullYear(),
+                mes = data.getMonth() + 1;
+            
+            return mes === mesSelecionado && ano === anoSelecionado;
+
+        }).forEach((entrada) => {
+            if (entrada.frequency === 'recorrente') {
+                return valorRecorrente += entrada.amount;
+            } else if (entrada.frequency === 'eventual') {
+                return valorEventual += entrada.amount;
+            } else {
+                return new Error('Erro no tipo de movimentação');
+            }
+        });
+
+        const total = valorRecorrente + valorEventual;
+
+        return [
+            { name: 'Recorrentes', valor: valorRecorrente, porcentagem: Number(((valorRecorrente / total) * 100).toFixed(1)), cor: '#d7eedb' },
+            { name: 'Eventuais', valor: valorEventual, porcentagem: Number(((valorEventual / total) * 100).toFixed(1)), cor: '#a55858' }
+        ]
+
+    },[mesSelecionado, anoSelecionado]);
+
     const trataMesSelecionado = (mes: string) => {
         try {
             const parseMes = Number(mes);
@@ -250,6 +280,7 @@ const Dashboard: React.FC = () => {
                 <CardSituacao title={trataCard.title} desc={trataCard.desc} footerText={trataCard.footerText} />
                 <GraficoPizza data={graficoEntradasSaidas} />
                 <GraficoLinhas data={dadosGraficoLinhas} linhaEntradas="#46a656" linhaSaidas="#e02828" />
+                <GraficoBarra title="Entradas" data={graficoEntradasRecorrentesVsEventuais} />
                 <GraficoBarra title="Saídas" data={graficoSaidasRecorrentesVsEventuais} />
             </Content>
 
