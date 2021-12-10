@@ -60,7 +60,7 @@ const Dashboard: React.FC = () => {
 
             if (mes === mesSelecionado && ano === anoSelecionado) {
                 try {
-                    total += item.amount
+                    total += item.amount;
                 } catch {
                     throw new Error('Valor inválido. Deve ser número');
                 }
@@ -180,6 +180,36 @@ const Dashboard: React.FC = () => {
         });
 
     },[anoSelecionado]);
+
+    const graficoSaidasRecorrentesVsEventuais = useMemo(() => {
+        let valorRecorrente = 0,
+            valorEventual = 0;
+
+        expenses.filter(saida => {
+            const data = new Date(saida.date),
+                ano = data.getFullYear(),
+                mes = data.getMonth() + 1;
+            
+            return mes === mesSelecionado && ano === anoSelecionado;
+
+        }).forEach((saida) => {
+            if (saida.frequency === 'recorrente') {
+                return valorRecorrente += saida.amount;
+            } else if (saida.frequency === 'eventual') {
+                return valorEventual += saida.amount;
+            } else {
+                return new Error('Erro no tipo de movimentação');
+            }
+        });
+
+        const total = valorRecorrente + valorEventual;
+
+        return [
+            { name: 'Recorrentes', valor: valorRecorrente, porcentagem: Number(((valorRecorrente / total) * 100).toFixed(1)), cor: '#d7eedb' },
+            { name: 'Eventuais', valor: valorEventual, porcentagem: Number(((valorEventual / total) * 100).toFixed(1)), cor: '#a55858' }
+        ]
+
+    },[mesSelecionado, anoSelecionado]);
 
     const trataMesSelecionado = (mes: string) => {
         try {
