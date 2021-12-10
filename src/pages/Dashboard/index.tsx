@@ -131,6 +131,56 @@ const Dashboard: React.FC = () => {
 
     }, [totalEntradas, totalSaidas]);
 
+    const dadosGraficoLinhas = useMemo(() => {
+
+        return meses.map((_, mesMap) => {
+            let valorEntradas = 0;
+
+            gains.forEach(entrada => {
+                const data = new Date(entrada.date),
+                    mesEntrada = data.getMonth(),
+                    anoEntrada = data.getFullYear();
+                
+                if (mesEntrada === mesMap && anoEntrada === anoSelecionado) {
+                    try {
+                        valorEntradas += entrada.amount;
+                    } catch {
+                        throw new Error('Erro no valor de entrada. Deve ser número.');
+                    }
+                }
+            });
+
+            let valorSaidas = 0;
+            expenses.forEach(saida => {
+                const data = new Date(saida.date),
+                    mesSaida = data.getMonth(),
+                    anoSaida = data.getFullYear();
+                
+                if (mesSaida === mesMap && anoSaida === anoSelecionado) {
+                    try {
+                        valorSaidas += saida.amount;
+                    } catch {
+                        throw new Error('Erro no valor de saída. Deve ser número.');
+                    }
+                }
+            });
+
+            return {
+                numeroMes: mesMap,
+                mes: meses[mesMap].substring(0, 3),
+                valorEntradas,
+                valorSaidas
+            }
+
+        }).filter(item => {
+            const mesAtual = new Date().getMonth(),
+                anoAtual = new Date().getFullYear();
+
+                return (anoSelecionado === anoAtual && item.numeroMes <= mesAtual) || (anoSelecionado < anoAtual)
+        });
+
+    },[anoSelecionado]);
+
     const trataMesSelecionado = (mes: string) => {
         try {
             const parseMes = Number(mes);
@@ -167,7 +217,7 @@ const Dashboard: React.FC = () => {
                 <WalletCard title="saídas" amount={totalSaidas} footer="atualizado com base nas entradas e saídas" icon="arrowDown" color="#e02828" />
                 <CardSituacao title={trataCard.title} desc={trataCard.desc} footerText={trataCard.footerText} />
                 <GraficoPizza data={graficoEntradasSaidas} />
-                <GraficoLinhas />
+                <GraficoLinhas data={dadosGraficoLinhas} linhaEntradas="#46a656" linhaSaidas="#e02828" />
             </Content>
 
         </Container>

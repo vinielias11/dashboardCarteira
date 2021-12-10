@@ -9,19 +9,43 @@ import {
     Tooltip
 } from 'recharts';
 
-import { Container } from './styles';
+import { Container, Header, ContainerLegenda, Legenda } from './styles';
 
-const GraficoLinhas: React.FC = () => (
+interface IGraficoLinhaProps {
+    data: {
+        mes: string;
+        valorEntradas: number;
+        valorSaidas: number;
+    }[];
+    linhaEntradas: string;
+    linhaSaidas: string;
+}
+
+const GraficoLinhas: React.FC<IGraficoLinhaProps> = ({
+    data, linhaEntradas, linhaSaidas
+}) => (
     <Container>
-        <h2>Histórico de saldo</h2>
+        <Header>
+            <h2>Histórico de saldo</h2>
+            <ContainerLegenda>
+                <Legenda color={linhaEntradas}>
+                    <div></div>
+                    <span>Entradas</span>
+                </Legenda>
+                <Legenda color={linhaSaidas}>
+                    <div></div>
+                    <span>Saídas</span>
+                </Legenda>
+            </ContainerLegenda>
+        </Header>
 
        <ResponsiveContainer>
-           <LineChart data={[]}>
-               <CartesianGrid strokeDasharray="3 3" stroke="#cecece"/>
-               <XAxis dataKey="month" stroke="#cecece" />
+           <LineChart data={data} margin={{ top: 5, right: 20, left: 20, bottom: 5 }}>
+               <CartesianGrid strokeDasharray="1 1" stroke="#cecece"/>
+               <XAxis dataKey="mes" stroke="#cecece" />
                <Tooltip />
-               <Line type="monotone" dataKey="valorEntradas" name="Entradas" stroke="#46a656" strokeWidth={5} dot={{ r:5 }} activeDot={{ r: 8 }} />
-               <Line type="monotone" dataKey="valorSaidas" name="Saídas" stroke="#e02828" strokeWidth={5} dot={{ r:5 }} activeDot={{ r: 8 }} />
+               <Line type="monotone" dataKey="valorEntradas" name="Entradas" stroke={linhaEntradas} strokeWidth={3} dot={{ r:4 }} activeDot={{ r: 5 }} />
+               <Line type="monotone" dataKey="valorSaidas" name="Saídas" stroke={linhaSaidas} strokeWidth={5} dot={{ r: 4 }} activeDot={{ r: 5 }} />
            </LineChart>
        </ResponsiveContainer>
     </Container>
