@@ -12,8 +12,10 @@ import meses from '../../utils/meses';
 
 import WalletCard from '../../components/WalletCard';
 import CardSituacao from '../../components/CardSituacao';
+
 import GraficoPizza from '../../components/GraficoPizza';
 import GraficoLinhas from '../../components/GraficoLinhas';
+import GraficoBarra from '../../components/GraficoBarra';
 
 const Dashboard: React.FC = () => {
     const [mesSelecionado, setMesSelecionado] = useState<number>(new Date().getMonth() + 1);
@@ -248,6 +250,7 @@ const Dashboard: React.FC = () => {
                 <CardSituacao title={trataCard.title} desc={trataCard.desc} footerText={trataCard.footerText} />
                 <GraficoPizza data={graficoEntradasSaidas} />
                 <GraficoLinhas data={dadosGraficoLinhas} linhaEntradas="#46a656" linhaSaidas="#e02828" />
+                <GraficoBarra title="Saídas" data={graficoSaidasRecorrentesVsEventuais} />
             </Content>
 
         </Container>
