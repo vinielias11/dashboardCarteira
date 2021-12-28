@@ -31,6 +31,7 @@ export const Direita = styled.main`,
     display: flex;
     justify-content: center;
     padding-top: 35px;
+    width: 100%;
 `;
 
 export const ContainerLegenda = styled.ul`

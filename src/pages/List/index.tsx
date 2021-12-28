@@ -131,7 +131,7 @@ const List: React.FC<IRouteParams> = ({ match }) => {
                 amountFormatted: formatarDinheiro(item.amount),
                 frequency: item.frequency,
                 dateFormatted: formatarData(item.date),
-                tagColor: item.frequency === 'recorrente' ? '#d7eedb' : '#a55858'
+                tagColor: item.frequency === 'recorrente' ? '#910707' : '#a55858'
             }
 
         });

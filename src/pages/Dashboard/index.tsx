@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 
 import { Container, Content } from './styles';
 
@@ -204,14 +204,16 @@ const Dashboard: React.FC = () => {
             }
         });
 
-        const total = valorRecorrente + valorEventual;
+        const total = valorRecorrente + valorEventual,
+            totalRecorrente = Number(((valorRecorrente / total) * 100).toFixed(1)),
+            totalEventual = Number(((valorEventual / total) * 100).toFixed(1));
 
         return [
-            { name: 'Recorrentes', valor: valorRecorrente, porcentagem: Number(((valorRecorrente / total) * 100).toFixed(1)), cor: '#d7eedb' },
-            { name: 'Eventuais', valor: valorEventual, porcentagem: Number(((valorEventual / total) * 100).toFixed(1)), cor: '#a55858' }
+            { name: 'Recorrentes', valor: valorRecorrente, porcentagem: totalRecorrente ? totalRecorrente : 0, cor: '#910707' },
+            { name: 'Eventuais', valor: valorEventual, porcentagem: totalEventual ? totalEventual : 0, cor: '#a55858' }
         ]
 
-    },[mesSelecionado, anoSelecionado]);
+    }, [mesSelecionado, anoSelecionado]);
 
     const graficoEntradasRecorrentesVsEventuais = useMemo(() => {
         let valorRecorrente = 0,
@@ -234,32 +236,34 @@ const Dashboard: React.FC = () => {
             }
         });
 
-        const total = valorRecorrente + valorEventual;
+        const total = valorRecorrente + valorEventual,
+            totalRecorrente = Number(((valorRecorrente / total) * 100).toFixed(1)),
+            totalEventual = Number(((valorEventual / total) * 100).toFixed(1));
 
         return [
-            { name: 'Recorrentes', valor: valorRecorrente, porcentagem: Number(((valorRecorrente / total) * 100).toFixed(1)), cor: '#d7eedb' },
-            { name: 'Eventuais', valor: valorEventual, porcentagem: Number(((valorEventual / total) * 100).toFixed(1)), cor: '#a55858' }
+            { name: 'Recorrentes', valor: valorRecorrente, porcentagem: totalRecorrente ? totalRecorrente : 0, cor: '#910707' },
+            { name: 'Eventuais', valor: valorEventual, porcentagem: totalEventual ? totalEventual : 0, cor: '#a55858' }
         ]
 
-    },[mesSelecionado, anoSelecionado]);
+    }, [mesSelecionado, anoSelecionado]);
 
-    const trataMesSelecionado = (mes: string) => {
+    const trataMesSelecionado = useCallback((mes: string) => {
         try {
             const parseMes = Number(mes);
             setMesSelecionado(parseMes);
         } catch {
             throw new Error('Mês inválido. Apenas 0 a 12 é suportado.')
         }
-    }
+    }, []);
 
-    const trataAnoSelecionado = (ano: string) => {
+    const trataAnoSelecionado = useCallback((ano: string) => {
         try {
             const parseAno = Number(ano);
             setAnoSelecionado(parseAno);
         } catch {
             throw new Error('Ano inválido. Apenas números inteiros são suportados.')
         }
-    }
+    }, []);
 
     return (
         <Container>

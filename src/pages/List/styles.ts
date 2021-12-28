@@ -37,7 +37,7 @@ export const Filters = styled.div`
             display: block;
             width: 55px;
             margin: 0 auto;
-            border-bottom: 10px solid #d7eedb;
+            border-bottom: 10px solid #910707;
     }
 
     .tag-filter-eventual::after {

@@ -7,21 +7,30 @@ import {
     ToggleSelector
 } from './styles';
 
-const Toggle: React.FC = () => {
-    const [online, setOnline] = useState(false);
+interface IToggleProps {
+    labelEsquerda: string;
+    labelDireita: string;
+    checked: boolean;
+    onChange(): void;
+}
+
+const Toggle: React.FC<IToggleProps> = ({
+    labelEsquerda, labelDireita, checked, onChange
+}) => {
+    // const [online, setOnline] = useState(false);
     
     return (
         <Container>
-            <ToggleLabel>Light</ToggleLabel>
+            <ToggleLabel>{labelEsquerda}</ToggleLabel>
             <ToggleSelector 
-                checked={!online}
+                checked={checked}
                 uncheckedIcon={false}
                 checkedIcon={false}
                 onHandleColor={'#fff'}
                 offHandleColor={'#121212'}
-                onChange={() => setOnline(!online)}
+                onChange={onChange}
             />
-            <ToggleLabel>Dark</ToggleLabel>
+            <ToggleLabel>{labelDireita}</ToggleLabel>
         </Container>)
 }
 

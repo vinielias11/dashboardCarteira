@@ -41,12 +41,12 @@ const GraficoBarra: React.FC<IGraficoBarraProps> = ({ title, data }) => {
             <Direita>
                 <ResponsiveContainer>
                     <BarChart data={data}>
-                        <Bar dataKey="valor">
+                        <Bar dataKey="valor" name="Valor">
                             {data.map((i) => (
                                 <Cell key={i.name} cursor="pointer" fill={i.cor} />
                             ))}
                         </Bar>
-                        <Tooltip formatter={(valor: number) => formatarDinheiro(valor)}/>
+                        <Tooltip cursor={{ fill: 'none' }} formatter={(valor: number) => formatarDinheiro(valor)}/>
                     </BarChart>
                 </ResponsiveContainer>
             </Direita>
