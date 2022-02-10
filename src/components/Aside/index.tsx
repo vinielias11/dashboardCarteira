@@ -14,10 +14,15 @@ import {
     LogImg,
     Title,
     MenuContainer,
-    MenuItemLink 
+    MenuItemLink,
+    MenuItemButton
 } from './styles'
 
+import { useAuth } from '../../hooks/auth';
+
 const Aside: React.FC = () => {
+    const { signOut } = useAuth();
+
     return (
         <Container>
             <Header>
@@ -26,10 +31,10 @@ const Aside: React.FC = () => {
             </Header>
 
             <MenuContainer>
-                <MenuItemLink href="/dashboard"><MdDashboard/>Dashboard</MenuItemLink>
+                <MenuItemLink href="/"><MdDashboard/>Dashboard</MenuItemLink>
                 <MenuItemLink href="/list/entradas"><MdArrowUpward/>Entradas</MenuItemLink>
                 <MenuItemLink href="/list/saidas"><MdArrowDownward/>Saídas</MenuItemLink>
-                <MenuItemLink href="#"><MdExitToApp/>Sair</MenuItemLink>
+                <MenuItemButton onClick={signOut}><MdExitToApp/>Sair</MenuItemButton>
             </MenuContainer>
         </Container>
     );

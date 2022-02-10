@@ -1,5 +1,4 @@
 import React from 'react';
-import { useState } from 'react';
 
 import { 
     Container,
@@ -17,7 +16,6 @@ interface IToggleProps {
 const Toggle: React.FC<IToggleProps> = ({
     labelEsquerda, labelDireita, checked, onChange
 }) => {
-    // const [online, setOnline] = useState(false);
     
     return (
         <Container>

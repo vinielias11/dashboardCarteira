@@ -38,10 +38,10 @@ const WalletCard: React.FC<IWalletCardProps> = ({
         <Container color={color}>
             <span>{title}</span>
             <h1> 
+                <strong>R$ </strong>
                 <CountUp
                     end={amount}
                     duration={2}
-                    prefix={"R$ "} 
                     separator="." 
                     decimal="," 
                     decimals={2}

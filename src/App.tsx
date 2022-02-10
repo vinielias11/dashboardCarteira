@@ -4,8 +4,6 @@ import { ThemeProvider } from 'styled-components';
 
 import { useTema } from './hooks/theme'
 
-import dark from './styles/themes/dark';
-
 import Routes from './routes';
 
 const App: React.FC = () => {
