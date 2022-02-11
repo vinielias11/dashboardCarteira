@@ -5,13 +5,21 @@ interface ILegendaProps {
 }
 
 export const Container = styled.div`
-    width: 48%;
+    width: 49%;
     height: 260px;
     margin: 10px 0;
     background-color: ${props => props.theme.colors.tertiary};
     color: ${props => props.theme.colors.white};
     border-radius: 7px;
     display: flex;
+
+    @media(max-width: 1200px) {
+        display: flex;
+        flex-direction: column;
+
+        width: 100%;
+        height: auto;
+    }
 `;
 
 export const Esquerda = styled.aside`
@@ -53,6 +61,12 @@ export const ContainerLegenda = styled.ul`
         background-color: ${props => props.theme.colors.tertiary};
     }
 
+    @media(max-width: 1200px) {
+        display: flex;
+
+        height: auto;
+    }
+
 `;
 
 export const Legenda = styled.li<ILegendaProps>`
@@ -73,6 +87,16 @@ export const Legenda = styled.li<ILegendaProps>`
 
     > span {
         margin-left: 5px;
+    }
+
+    @media(max-width: 1200px) {
+        > div {
+            width: 40px;
+            height: 40px;
+
+            font-size: 10px;
+            line-height: 30px;
+        }
     }
 
 `;

@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logoimg from '../../assets/logo.svg';
+import Toggle from '../Toggle';
 
 import {
     MdDashboard,
     MdArrowDownward,
     MdArrowUpward,
-    MdExitToApp
+    MdExitToApp,
+    MdClose,
+    MdMenu
 } from 'react-icons/md';
 
 import { 
@@ -15,17 +18,37 @@ import {
     Title,
     MenuContainer,
     MenuItemLink,
-    MenuItemButton
+    MenuItemButton,
+    ToggleMenu,
+    FooterTrocaDeTema
 } from './styles'
 
 import { useAuth } from '../../hooks/auth';
+import { useTema } from '../../hooks/theme';
 
 const Aside: React.FC = () => {
+    const [isToggleMenuAberto, setIsToggleMenuAberto] = useState(false);
+
     const { signOut } = useAuth();
+    const { temaToggle, tema } = useTema(),
+        [temaDark, setTemaDark] = useState(() => tema.title === 'dark' ? true : false);
+
+    const trataToggleMenu = () => {
+        setIsToggleMenuAberto(!isToggleMenuAberto);
+    };
+
+    const trataTrocaDeTema = () => {
+        setTemaDark(!temaDark);
+        temaToggle();
+    };
 
     return (
-        <Container>
+        <Container isMenuAberto={isToggleMenuAberto}>
             <Header>
+                <ToggleMenu onClick={trataToggleMenu}>
+                    { isToggleMenuAberto ? <MdClose/> : <MdMenu/> }
+                </ToggleMenu>
+
                 <LogImg src={logoimg} alt="Logo Minha Carteira"/>
                 <Title>Minha Carteira</Title>
             </Header>
@@ -36,6 +59,10 @@ const Aside: React.FC = () => {
                 <MenuItemLink href="/list/saidas"><MdArrowDownward/>Saídas</MenuItemLink>
                 <MenuItemButton onClick={signOut}><MdExitToApp/>Sair</MenuItemButton>
             </MenuContainer>
+
+            <FooterTrocaDeTema isMenuAberto={isToggleMenuAberto}>
+                <Toggle labelEsquerda="Light" labelDireita="Dark" checked={temaDark} onChange={trataTrocaDeTema} />
+            </FooterTrocaDeTema>
         </Container>
     );
 }

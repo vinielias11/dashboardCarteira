@@ -6,9 +6,9 @@ interface ILegendaProps {
 
 export const Container = styled.div`
     width: 100%;
+    display: flex;
     flex: 1;
     height: 360px;
-    display: flex;
     flex-direction: column;
     background-color: ${props => props.theme.colors.tertiary};
     color: ${props => props.theme.colors.white};
@@ -28,7 +28,7 @@ export const Legenda = styled.li<ILegendaProps>`
     align-items: center;
 
     margin-bottom: 7px;
-    margin-left: 7px;
+    margin-left: 16px;
 
     > div {
         background-color: ${props => props.color};
@@ -43,6 +43,13 @@ export const Legenda = styled.li<ILegendaProps>`
     > span {
         margin-left: 5px;
     }
+
+    @media(max-width: 1280px) {
+        > div {
+            width: 30px;
+            height: 30px;
+        }
+    }
 `;
 
 export const Header = styled.header`
@@ -53,5 +60,9 @@ export const Header = styled.header`
     > h2 {
         margin-bottom: 20px;
         padding-left: 16px;
+    }
+
+    @media(max-width: 1200px) {
+        flex-direction: column;
     }
 `;
