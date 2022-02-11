@@ -1,17 +1,33 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+
+const animate = keyframes`
+    0% {
+        transform: translateX(100px);
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.3;
+    }
+    100% {
+        transform: translateX(0px);
+        opacity: 1;
+    }
+`
 
 interface ILegendaProps {
     color: string;
 }
 
 export const Container = styled.div`
-    width: 49%;
+    width: 45%;
     height: 260px;
     margin: 10px 0;
     background-color: ${props => props.theme.colors.tertiary};
     color: ${props => props.theme.colors.white};
     border-radius: 7px;
     display: flex;
+
+    animation: ${animate} 0.5s;
 
     @media(max-width: 1200px) {
         display: flex;
@@ -39,7 +55,11 @@ export const Direita = styled.main`,
     display: flex;
     justify-content: center;
     padding-top: 35px;
-    width: 100%;
+    width: 50%;
+
+    @media(max-width: 1200px) {
+        width: 100%;
+    }
 `;
 
 export const ContainerLegenda = styled.ul`
